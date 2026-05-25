@@ -81,16 +81,23 @@
 </template>
 
 <script>
+import { getSessionStorage } from "@/common";
+
 export default {
   name: "AddBusiness",
   data() {
     return {
+      user: {},
       businessName: "",
       businessAddress: "",
       businessExplain: "",
-      minDeliveryFee: "", // 新增起送费绑定字段
-      deliveryFee: ""     // 新增配送费绑定字段
+      minDeliveryFee: "",
+      deliveryFee: ""
     };
+  },
+  mounted() {
+    const rawUser = getSessionStorage('user');
+    this.user = typeof rawUser === 'string' ? JSON.parse(rawUser) : (rawUser || {});
   },
   methods: {
     back() {
@@ -98,7 +105,6 @@ export default {
     },
 
     async submit(){
-      // 补充起送费、配送费的非空校验
       if(this.businessName==''){
         alert('名称不能为空！');
         return;
@@ -119,7 +125,6 @@ export default {
         alert('配送费不能为空！');
         return;
       }
-      // 校验费用为数字（避免输入非数字内容）
       if(isNaN(Number(this.minDeliveryFee))){
         alert('起送费请输入数字！');
         return;
@@ -129,20 +134,26 @@ export default {
         return;
       }
 
-      await this.$axios.post('api/businesses',{
-        "businessName":this.businessName,
-        "businessAddress":this.businessAddress,
-        "businessExplain":this.businessExplain,
-        "starPrice":Number(this.minDeliveryFee), // 转为数字传给后端
-        "deliveryPrice":Number(this.deliveryFee)       // 转为数字传给后端
-      }).then(response=>{
-        alert("成功")
-      }).catch(error=>{
+      try {
+        const res = await this.$axios.post('BusinessController/saveBusiness', {
+          businessName: this.businessName,
+          businessAddress: this.businessAddress,
+          businessExplain: this.businessExplain,
+          starPrice: Number(this.minDeliveryFee),
+          deliveryPrice: Number(this.deliveryFee),
+          ownerId: this.user.userId
+        });
+
+        if (res.data.code === 200) {
+          alert("商家创建成功！");
+          this.$router.push({ path: "/addBusinessPage" });
+        } else {
+          alert("创建失败：" + (res.data.message || "未知错误"));
+        }
+      } catch (error) {
         alert('请求失败：' + (error.response?.data?.message || error.message));
         console.error(error);
-      });
-
-      this.$router.go(-1)
+      }
     }
   }
 };

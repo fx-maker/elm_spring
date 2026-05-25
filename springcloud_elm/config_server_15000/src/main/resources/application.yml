@@ -7,7 +7,7 @@ spring:
   config: #有关springcloud config的配置
    server:
     git:
-     uri: https://gitee.com/yuhongjun01/elm-scc.git #git远程仓库地址
+     uri: https://gitee.com/longbow-yao/scc-test.git #git远程仓库地址
 
  # rabbitmq的配置
  rabbitmq:

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.mapper.PointsMapper">
+    <resultMap type="Points" id="pointsResultMap">
+        <id column="pointsId" property="pointsId"/>
+        <result column="userId" property="userId"/>
+        <result column="totalPoints" property="totalPoints"/>
+        <result column="availablePoints" property="availablePoints"/>
+    </resultMap>
+
+    <select id="getPointsByUserId" parameterType="String" resultMap="pointsResultMap">
+        SELECT * FROM points WHERE userId=#{userId}
+    </select>
+
+    <insert id="savePoints" parameterType="Points" useGeneratedKeys="true" keyProperty="pointsId">
+        INSERT INTO points (userId, totalPoints, availablePoints) VALUES (#{userId}, #{totalPoints}, #{availablePoints})
+    </insert>
+
+    <update id="updatePoints" parameterType="Points">
+        UPDATE points SET totalPoints=#{totalPoints}, availablePoints=#{availablePoints} WHERE pointsId=#{pointsId}
+    </update>
+</mapper>

@@ -12,10 +12,14 @@ import AddUserAddress from '../views/AddUserAddress.vue'
 import EditUserAddress from '../views/EditUserAddress.vue'
 import Register from '../views/Register.vue'
 import MyPage from "@/views/MyPage.vue";
+import AdminPage from "@/views/AdminPage.vue";
 import AddBusinessPage from "@/views/AddBusinessPage.vue";
 import AddBusiness from "@/views/AddBusiness.vue";
 import AddFood from "@/views/AddFood.vue";
 import PutongPage from "@/views/PutongPage.vue";
+import WalletPage from "@/views/WalletPage.vue";
+import PointsPage from "@/views/PointsPage.vue";
+import CartPage from "@/views/CartPage.vue";
 
 
 Vue.use(VueRouter)
@@ -90,10 +94,30 @@ const routes = [{
 		path: '/editUserAddress',
 		name: 'EditUserAddress',
 		component: EditUserAddress
-	}, {
+	}, 	{
 		path: '/register',
 		name: 'Register',
 		component: Register
+	},
+	{
+		path: '/walletPage',
+		name: 'WalletPage',
+		component: WalletPage
+	},
+	{
+		path: '/pointsPage',
+		name: 'PointsPage',
+		component: PointsPage
+	},
+	{
+		path: '/cartPage',
+		name: 'CartPage',
+		component: CartPage
+	},
+	{
+		path: '/adminPage',
+		name: 'AdminPage',
+		component: AdminPage
 	}
 
 ]

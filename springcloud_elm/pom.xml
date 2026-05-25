@@ -66,6 +66,8 @@
 	 	<module>deliveryaddress_server_10501</module>
 	 	<module>config_server_15000</module>
 	 	<module>config_server_15001</module>
+	 	<module>wallet_server_10700</module>
+	 	<module>points_server_10800</module>
 	</modules>
 
 	 <build>

@@ -7,30 +7,27 @@ import com.neusoft.po.Orders;
 import com.neusoft.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@CrossOrigin("*")
 @RestController
 @RequestMapping("/OrdersController")
-@RefreshScope //开启动态刷新
+@RefreshScope
 public class OrdersController {
 	@Autowired
 	private OrdersService ordersService;
 
-	@PostMapping("/createOrders/{userId}/{businessId}/{daId}/{orderTotal}")
+	@PostMapping("/createOrders/{userId}/{businessId}/{daId}")
 	public CommonResult<Integer> createOrders(@PathVariable("userId") String userId,
-                                              @PathVariable("businessId") Integer businessId, @PathVariable("daId") Integer daId,
-                                              @PathVariable("orderTotal") Double orderTotal) throws Exception {
+	                                          @PathVariable("businessId") Integer businessId,
+	                                          @PathVariable("daId") Integer daId) throws Exception {
 		Orders orders = new Orders();
 		orders.setUserId(userId);
 		orders.setBusinessId(businessId);
 		orders.setDaId(daId);
-		orders.setOrderTotal(orderTotal);
 		int orderId = ordersService.createOrders(orders);
 		return new CommonResult(200, "success（10600）", orderId);
 	}

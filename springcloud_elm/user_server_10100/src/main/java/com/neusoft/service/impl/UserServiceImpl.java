@@ -1,5 +1,7 @@
 package com.neusoft.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +10,8 @@ import com.neusoft.po.User;
 import com.neusoft.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserService{
-	
+public class UserServiceImpl implements UserService {
+
 	@Autowired
 	private UserMapper userMapper;
 
@@ -17,14 +19,24 @@ public class UserServiceImpl implements UserService{
 	public User getUserByIdByPass(User user) {
 		return userMapper.getUserByIdByPass(user);
 	}
-	
+
 	@Override
 	public int getUserById(String userId) {
 		return userMapper.getUserById(userId);
 	}
-	
+
 	@Override
 	public int saveUser(User user) {
 		return userMapper.saveUser(user);
+	}
+
+	@Override
+	public List<User> listAllUsers() {
+		return userMapper.listAllUsers();
+	}
+
+	@Override
+	public int updateUserType(String userId, String userType) {
+		return userMapper.updateUserType(userId, userType);
 	}
 }

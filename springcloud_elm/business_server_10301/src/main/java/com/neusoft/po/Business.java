@@ -12,6 +12,7 @@ public class Business {
     private Double deliveryPrice;
     private String remarks;
     private Object foodList;
+    private String ownerId;
 
     public Integer getBusinessId() {
         return businessId;
@@ -91,5 +92,13 @@ public class Business {
 
     public void setFoodList(Object foodList) {
         this.foodList = foodList;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }

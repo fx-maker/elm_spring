@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.mapper.PointsRuleMapper">
+    <resultMap type="PointsRule" id="pointsRuleResultMap">
+        <id column="ruleId" property="ruleId"/>
+        <result column="ruleName" property="ruleName"/>
+        <result column="ruleType" property="ruleType"/>
+        <result column="channel" property="channel"/>
+        <result column="ratio" property="ratio"/>
+        <result column="fixedPoints" property="fixedPoints"/>
+        <result column="validDays" property="validDays"/>
+        <result column="isEnabled" property="isEnabled"/>
+        <result column="startTime" property="startTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <select id="listPointsRule" resultMap="pointsRuleResultMap">
+        SELECT * FROM points_rule
+        <where>
+            <if test="channel != null and channel != ''">
+                AND channel=#{channel}
+            </if>
+            <if test="ruleType != null and ruleType != ''">
+                AND ruleType=#{ruleType}
+            </if>
+        </where>
+        ORDER BY ruleId
+    </select>
+
+    <select id="getPointsRuleById" parameterType="Integer" resultMap="pointsRuleResultMap">
+        SELECT * FROM points_rule WHERE ruleId=#{ruleId}
+    </select>
+
+    <insert id="savePointsRule" parameterType="PointsRule" useGeneratedKeys="true" keyProperty="ruleId">
+        INSERT INTO points_rule (ruleName, ruleType, channel, ratio, fixedPoints, validDays, isEnabled, startTime, endTime, description)
+        VALUES (#{ruleName}, #{ruleType}, #{channel}, #{ratio}, #{fixedPoints}, #{validDays}, #{isEnabled}, #{startTime}, #{endTime}, #{description})
+    </insert>
+
+    <update id="updatePointsRule" parameterType="PointsRule">
+        UPDATE points_rule
+        SET ruleName=#{ruleName}, ruleType=#{ruleType}, channel=#{channel},
+            ratio=#{ratio}, fixedPoints=#{fixedPoints}, validDays=#{validDays},
+            isEnabled=#{isEnabled}, startTime=#{startTime}, endTime=#{endTime}, description=#{description}
+        WHERE ruleId=#{ruleId}
+    </update>
+
+    <delete id="deletePointsRule" parameterType="Integer">
+        DELETE FROM points_rule WHERE ruleId=#{ruleId}
+    </delete>
+</mapper>

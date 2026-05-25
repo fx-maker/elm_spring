@@ -24,4 +24,14 @@ public class BusinessServiceImpl implements BusinessService{
 	public Business getBusinessById(Integer businessId) {
 		return businessMapper.getBusinessById(businessId);
 	}
+
+	@Override
+	public int saveBusiness(Business business) {
+		return businessMapper.saveBusiness(business);
+	}
+
+	@Override
+	public int updateOwner(Integer businessId, String ownerId) {
+		return businessMapper.updateOwner(businessId, ownerId);
+	}
 }

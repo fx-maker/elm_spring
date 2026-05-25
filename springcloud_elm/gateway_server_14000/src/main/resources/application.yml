@@ -6,51 +6,56 @@ spring:
 #下面是关于Gateway的配置
  cloud:
   gateway:
-   globalcors: #设置全局跨域处理
+   globalcors:
     corsConfigurations:
      '[/**]':
-       allowedOrigins: "*"
-       allowedHeaders: "*"
-       allowedMethods:
-       - GET
-       - POST
-       - PUT
-       - DELETE
-   default-filters: #设置全局熔断处理
-   - name: Hystrix
-     args:
-      name: fallbackcmd
-      fallbackUri: forward:/fallback
-   routes: #设置路由
+      allowedOrigins: "*"
+      allowedHeaders: "*"
+      allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+   routes:
    - id: userServer
      uri: lb://user-server
      predicates:
-     - Path=/UserController/*/**
+     - Path=/UserController/**
 
    - id: foodServer
      uri: lb://food-server
      predicates:
-     - Path=/FoodController/*/**
+     - Path=/FoodController/**
 
    - id: businessServer
      uri: lb://business-server
      predicates:
-     - Path=/BusinessController/*/**
+     - Path=/BusinessController/**
 
    - id: cartServer
      uri: lb://cart-server
      predicates:
-     - Path=/CartController/*/**
+     - Path=/CartController/**
 
    - id: deliveryaddressServer
      uri: lb://deliveryaddress-server
      predicates:
-     - Path=/DeliveryaddressController/*/**
+     - Path=/DeliveryAddressController/**
 
    - id: ordersServer
      uri: lb://orders-server
      predicates:
-     - Path=/OrdersController/*/**
+     - Path=/OrdersController/**
+
+   - id: walletServer
+     uri: lb://wallet-server
+     predicates:
+     - Path=/WalletController/**
+
+   - id: pointsServer
+     uri: lb://points-server
+     predicates:
+     - Path=/PointsController/**
 
 #eureka配置
 eureka:

@@ -9,25 +9,50 @@
 		<result column="businessId" property="businessId"/>
 		<result column="userId" property="userId"/>
 		<result column="quantity" property="quantity"/>
+		<association columnPrefix="f_" property="food" javaType="Food">
+			<id column="foodId" property="foodId"/>
+			<result column="foodName" property="foodName"/>
+			<result column="foodExplain" property="foodExplain"/>
+			<result column="foodImg" property="foodImg"/>
+			<result column="foodPrice" property="foodPrice"/>
+		</association>
+		<association columnPrefix="b_" property="business" javaType="Business">
+			<id column="businessId" property="businessId"/>
+			<result column="businessName" property="businessName"/>
+			<result column="businessImg" property="businessImg"/>
+			<result column="deliveryPrice" property="deliveryPrice"/>
+			<result column="starPrice" property="starPrice"/>
+		</association>
 	</resultMap>
 
     <select id="listCart" parameterType="Cart" resultMap="cartResultMap">
-    	select * from cart
+    	SELECT c.cartId, c.foodId, c.businessId, c.userId, c.quantity,
+    	       f.foodId AS f_foodId, f.foodName AS f_foodName, f.foodExplain AS f_foodExplain,
+    	       f.foodImg AS f_foodImg, f.foodPrice AS f_foodPrice,
+    	       b.businessId AS b_businessId, b.businessName AS b_businessName,
+    	       b.businessImg AS b_businessImg, b.deliveryPrice AS b_deliveryPrice,
+    	       b.starPrice AS b_starPrice
+    	FROM cart c
+    	LEFT JOIN food f ON c.foodId = f.foodId
+    	LEFT JOIN business b ON c.businessId = b.businessId
     	<where>
-    	    userId=#{userId}
+    	    c.userId=#{userId}
     	    <if test="businessId!=null and businessId!=''">
-    	        and businessId=#{businessId}
+    	        AND c.businessId=#{businessId}
     	    </if>
     	</where>
-    	order by cartId
+    	ORDER BY c.cartId
     </select>
-    
+
     <delete id="removeCart" parameterType="Cart">
-        delete from cart 
+        DELETE FROM cart
         <where>
-        	userId=#{userId} and businessId=#{businessId}
+        	userId=#{userId}
+        	<if test="businessId!=null and businessId!=''">
+    	        AND businessId=#{businessId}
+    	    </if>
         	<if test="foodId!=null and foodId!=''">
-    	        and foodId=#{foodId}
+    	        AND foodId=#{foodId}
     	    </if>
         </where>
     </delete>

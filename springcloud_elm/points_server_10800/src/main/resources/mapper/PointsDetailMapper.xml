@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.mapper.PointsDetailMapper">
+    <resultMap type="PointsDetail" id="pointsDetailResultMap">
+        <id column="detailId" property="detailId"/>
+        <result column="userId" property="userId"/>
+        <result column="points" property="points"/>
+        <result column="type" property="type"/>
+        <result column="expireTime" property="expireTime"/>
+        <result column="relatedId" property="relatedId"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <select id="listPointsDetailByUserId" parameterType="String" resultMap="pointsDetailResultMap">
+        SELECT * FROM points_detail WHERE userId=#{userId} ORDER BY detailId DESC
+    </select>
+
+    <insert id="savePointsDetail" parameterType="PointsDetail" useGeneratedKeys="true" keyProperty="detailId">
+        INSERT INTO points_detail (userId, points, type, expireTime, relatedId, description, status, createTime)
+        VALUES (#{userId}, #{points}, #{type}, #{expireTime}, #{relatedId}, #{description}, #{status}, #{createTime})
+    </insert>
+
+    <update id="updatePointsDetail" parameterType="PointsDetail">
+        UPDATE points_detail SET status=#{status} WHERE detailId=#{detailId}
+    </update>
+</mapper>

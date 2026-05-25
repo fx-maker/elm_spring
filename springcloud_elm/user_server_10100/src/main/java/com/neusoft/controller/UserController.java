@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 //@CrossOrigin("*") //跨域处理
 @RestController
@@ -52,6 +55,20 @@ Exception{
 		 int result = userService.saveUser(param);
 		 return new CommonResult(200,"success",result);
 	 }
-		
+
+	 @GetMapping("/listAllUsers")
+	 public CommonResult<List<User>> listAllUsers() throws Exception {
+		 List<User> users = userService.listAllUsers();
+		 return new CommonResult(200, "success", users);
+	 }
+
+	 @PutMapping("/updateUserType/{userId}/{userType}")
+	 public CommonResult<Integer> updateUserType(
+			 @PathVariable("userId") String userId,
+			 @PathVariable("userType") String userType) throws Exception {
+		 int result = userService.updateUserType(userId, userType);
+		 return new CommonResult(200, "success", result);
+	 }
+
 
 }

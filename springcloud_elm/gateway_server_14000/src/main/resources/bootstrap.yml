@@ -1,4 +1,6 @@
 spring:
+ application:
+  name: gateway-server
  cloud:
   config:
    name: gateway_server_14000 #应用名称，对应git中的文件名的前半部分

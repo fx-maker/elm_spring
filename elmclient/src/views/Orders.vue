@@ -108,7 +108,7 @@
 				}
 				
 				//创建订单 - 使用 RESTful POST 请求
-				let url = `OrdersController/createOrders/${this.user.userId}/${this.businessId}/${this.deliveryaddress.daId}/${this.totalPrice}`;
+				let url = `OrdersController/createOrders/${this.user.userId}/${this.businessId}/${this.deliveryaddress.daId}`;
 				this.$axios.post(url).then(response=>{
 					if(response.data.code == 200){
 						let orderId = response.data.result;

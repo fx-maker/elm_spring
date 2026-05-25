@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.neusoft.feign.FoodFeignClient;  // 导入Feign接口
 import com.neusoft.po.Business;
@@ -47,5 +50,17 @@ public class BusinessController {
         	business.setFoodList(new ArrayList());
         }
         return new CommonResult(200, "success", business);
+    }
+
+    @PostMapping("/saveBusiness")
+    public CommonResult<Integer> saveBusiness(@RequestBody Business business) throws Exception {
+        int result = businessService.saveBusiness(business);
+        return new CommonResult(200, "success", result);
+    }
+
+    @PutMapping("/updateOwner/{businessId}/{ownerId}")
+    public CommonResult<Integer> updateOwner(@PathVariable Integer businessId, @PathVariable String ownerId) throws Exception {
+        int result = businessService.updateOwner(businessId, ownerId);
+        return new CommonResult(200, "success", result);
     }
 }

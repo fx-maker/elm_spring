@@ -10,7 +10,7 @@
 		<h3>订单信息：</h3>
 		<div class="order-info">
 			<p>
-				{{orders.business.businessName}}
+				{{orders.business!=null ? orders.business.businessName : '加载中...'}}
 				<i class="fa fa-caret-down" @click="detailetShow"></i>
 			</p>
 			<p>&#165;{{orders.orderTotal}}</p>
@@ -24,20 +24,12 @@
 			</li>
 			<li>
 				<p>配送费</p>
-				<p>&#165;{{orders.business.deliveryPrice}}</p>
+				<p>&#165;{{orders.business!=null ? orders.business.deliveryPrice : 0}}</p>
 			</li>
 		</ul>
 
 		<!-- 支付方式部分 -->
-		<ul class="payment-type">
-			<li>
-				<img src="../assets/alipay.png">
-				<i class="fa fa-check-circle"></i>
-			</li>
-			<li>
-				<img src="../assets/wechat.png">
-			</li>
-		</ul>
+		<div class="payment-tip">将从钱包扣款</div>
 		<div class="payment-button" >
 			<button @click="pay">确认支付</button>
 		</div>
@@ -180,36 +172,16 @@
 		color: #666;
 	}
 
-	/****************** 支付方式部分 ******************/
-	.wrapper .payment-type {
-		width: 100%;
-	}
-
-	.wrapper .payment-type li {
+	/****************** 支付提示部分 ******************/
+	.wrapper .payment-tip {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 4vw;
-
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		padding: 2vw 4vw;
+		font-size: 3.5vw;
+		color: #666;
 	}
 
-	.wrapper .payment-type li img {
-		width: 33vw;
-		height: 8.9vw;
-	}
-
-	.wrapper .payment-type li .fa-check-circle {
-		font-size: 5vw;
-		color: #38CA73;
-	}
-
-	.wrapper .payment-button {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 4vw;
-	}
+	/****************** 支付按钮部分 ******************/
 
 	.wrapper .payment-button button {
 		width: 100%;

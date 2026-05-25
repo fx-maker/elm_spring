@@ -8,6 +8,7 @@ public class User {
 	private Integer userSex;
 	private String userImg;
 	private Integer delTag;
+	private String userType;
 	
 	public String getUserId() {
 		return userId;
@@ -44,5 +45,11 @@ public class User {
 	}
 	public void setDelTag(Integer delTag) {
 		this.delTag = delTag;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 }

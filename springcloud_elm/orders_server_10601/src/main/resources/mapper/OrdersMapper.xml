@@ -11,10 +11,6 @@
 	    <result column="orderTotal" property="orderTotal"/>
 	    <result column="daId" property="daId"/>
 	    <result column="orderState" property="orderState"/>
-	    <association property="business" javaType="Business"
-	         select="com.neusoft.mapper.BusinessMapper.getBusinessById" column="businessId"/>
-	    <collection property="list" ofType="OrderDetailet"
-	         select="com.neusoft.mapper.OrderDetailetMapper.listOrderDetailetByOrderId" column="orderId"/>     
 	</resultMap>
 
 	<select id="getOrdersById" parameterType="Integer" resultMap="ordersResultMap">

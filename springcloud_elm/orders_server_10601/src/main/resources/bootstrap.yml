@@ -1,4 +1,6 @@
 spring:
+ application:
+  name: orders-server
  cloud:
   config:
    name: orders_server_10601 #应用名称，对应git中的文件名的前半部分

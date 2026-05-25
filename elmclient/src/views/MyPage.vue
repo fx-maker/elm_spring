@@ -1,24 +1,54 @@
 <template>
   <div class="wrapper">
-    <!-- 核心头部：保持原有风格 -->
+    <!-- 头部：身份不同标题不同 -->
     <header class="page-header">
-      <span class="header-title">我的信息</span>
+      <span class="header-title">{{ pageTitle }}</span>
     </header>
 
-    <!-- 第一个框：展示用户名 -->
+    <!-- 用户信息（通用，所有身份都有） -->
     <div class="info-box username-box">
       <span class="box-label">用户名：</span>
-      <span class="box-content">{{ user.username || '未设置用户名' }}</span>
+      <span class="box-content">{{ user.userName || '未设置用户名' }}</span>
     </div>
-
-    <!-- 第二个框：新增电话展示（使用user.phone） -->
     <div class="info-box phone-box">
       <span class="box-label">注册电话：</span>
-      <!-- 手机号脱敏处理：中间4位替换为*，保护隐私 -->
-      <span class="box-content">{{ (user.phone) || '未绑定手机号' }}</span>
+      <span class="box-content">{{ user.userId || '未绑定手机号' }}</span>
     </div>
 
-    <!-- 保留底部组件 -->
+    <!-- 普通用户入口：钱包 + 积分 -->
+    <template v-if="!user.userType || user.userType === 'USER'">
+      <div class="info-box wallet-box" @click="$router.push('/walletPage')">
+        <span class="box-label"><i class="fa fa-credit-card"></i> 我的钱包</span>
+        <i class="fa fa-angle-right"></i>
+      </div>
+      <div class="info-box points-box" @click="$router.push('/pointsPage')">
+        <span class="box-label"><i class="fa fa-gift"></i> 我的积分</span>
+        <i class="fa fa-angle-right"></i>
+      </div>
+    </template>
+
+    <!-- 商家用户入口：商家管理 -->
+    <template v-else-if="user.userType === 'BUSINESS'">
+      <div class="info-box business-box" @click="$router.push('/addBusinessPage')">
+        <span class="box-label"><i class="fa fa-building"></i> 商家管理</span>
+        <i class="fa fa-angle-right"></i>
+      </div>
+    </template>
+
+    <!-- 管理员入口：系统管理 -->
+    <template v-else-if="user.userType === 'ADMIN'">
+      <div class="info-box admin-box" @click="$router.push('/adminPage')">
+        <span class="box-label"><i class="fa fa-cogs"></i> 系统管理</span>
+        <i class="fa fa-angle-right"></i>
+      </div>
+    </template>
+
+    <!-- 退出登录（所有身份都有） -->
+    <div class="info-box logout-box" @click="logout">
+      <span class="box-label"><i class="fa fa-sign-out"></i> 退出登录</span>
+      <i class="fa fa-angle-right"></i>
+    </div>
+
     <Footer class="page-footer" />
   </div>
 </template>
@@ -31,27 +61,22 @@ export default {
   name: "MyPage",
   components: { Footer },
   data() {
+    const rawUser = getSessionStorage('user');
+    const user = typeof rawUser === 'string' ? JSON.parse(rawUser) : (rawUser || {});
     return {
-      // 解析用户信息，兼容字符串/对象格式
-      user: this.parseUserInfo(getSessionStorage('user'))
+      user,
+      pageTitle:
+        user.userType === 'ADMIN'    ? '系统管理' :
+        user.userType === 'BUSINESS' ? '商家管理' : '我的信息'
     };
   },
   methods: {
-    // 解析sessionStorage中的用户信息，处理序列化问题
-    parseUserInfo(userData) {
-      if (!userData) return {};
-      return typeof userData === 'string' ? JSON.parse(userData) : userData;
-    },
-    // 手机号脱敏格式化：138****5678 格式
-    formatPhone(phone) {
-      if (!phone || phone.length !== 11) return phone; // 非11位手机号不处理
-      return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
-    },
-    // 保留退出登录功能（后续可在头部添加按钮触发）
     logout() {
       if (confirm("确定退出登录吗？")) {
-        removeSessionStorage("auth") || sessionStorage.removeItem("auth");
-        removeSessionStorage("user") || sessionStorage.removeItem("user");
+        removeSessionStorage("auth");
+        removeSessionStorage("user");
+        sessionStorage.removeItem("auth");
+        sessionStorage.removeItem("user");
         this.$router.push({ path: "/login" });
       }
     }
@@ -126,6 +151,54 @@ export default {
   white-space: normal;
   line-height: 1.4;
   max-width: 60%;
+}
+
+/* 钱包、积分、商家、管理员入口通用样式 */
+.wallet-box, .points-box, .business-box, .admin-box {
+  cursor: pointer;
+  justify-content: space-between;
+  padding-right: 6vw;
+}
+
+.wallet-box .box-label i, .points-box .box-label i,
+.business-box .box-label i, .admin-box .box-label i {
+  margin-right: 2vw;
+  color: #0097FF;
+}
+
+.wallet-box .box-label, .points-box .box-label,
+.business-box .box-label, .admin-box .box-label {
+  display: flex;
+  align-items: center;
+  font-size: 4vw;
+  color: #333;
+  max-width: none;
+}
+
+.wallet-box i.fa-angle-right, .points-box i.fa-angle-right,
+.business-box i.fa-angle-right, .admin-box i.fa-angle-right, .logout-box i.fa-angle-right {
+  font-size: 6vw;
+  color: #ccc;
+}
+
+/* 退出登录按钮：红色警示风格 */
+.logout-box {
+  cursor: pointer;
+  justify-content: space-between;
+  padding-right: 6vw;
+}
+
+.logout-box .box-label {
+  display: flex;
+  align-items: center;
+  font-size: 4vw;
+  color: #FF4757;
+  max-width: none;
+}
+
+.logout-box .box-label i {
+  margin-right: 2vw;
+  color: #FF4757;
 }
 
 /* 底部组件：固定定位，不遮挡内容 */

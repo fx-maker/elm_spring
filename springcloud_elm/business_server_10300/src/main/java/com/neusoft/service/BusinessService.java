@@ -8,4 +8,6 @@ public interface BusinessService {
 
 	public List<Business> listBusinessByOrderTypeId(Integer orderTypeId);
 	public Business getBusinessById(Integer businessId);
+	public int saveBusiness(Business business);
+	public int updateOwner(Integer businessId, String ownerId);
 }

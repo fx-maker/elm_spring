@@ -4,9 +4,9 @@
 			<i class="fa fa-home"></i>
 			<p>首页</p>
 		</li>
-		<li>
-			<i class="fa fa-compass"></i>
-			<p>发现</p>
+		<li @click="toCartPage">
+			<i class="fa fa-shopping-cart"></i>
+			<p>购物车</p>
 		</li>
 		<li @click="toOrderList">
 			<i class="fa fa-file-text-o"></i>
@@ -27,6 +27,14 @@
 		methods:{
 			toIndex(){
 				this.$router.push({path:'/index'});
+			},
+			toCartPage(){
+				const user = getSessionStorage('user');
+				if (!user) {
+					this.$router.push({path:'/login'});
+					return;
+				}
+				this.$router.push({path:'/cartPage'});
 			},
 			toOrderList(){
 				this.$router.push({path:'/orderList'});
